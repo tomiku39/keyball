@@ -35,14 +35,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [1] = LAYOUT_universal(
   S(KC_ESC),KC_NO    , KC_NO    , KC_NO    , KC_NO     , KC_NO   ,                              KC_NUM_LOCK  , KC_7     , KC_8     , KC_9    , _______  , KC_EQL  ,
   _______ , KC_NO    , KC_NO    , KC_NO    , KC_NO     , KC_NO   ,                                  _______  , KC_4     , KC_5     , KC_6    , _______  , _______  ,
-  _______ , KC_NO    , KC_NO    , KC_NUHS  , S(KC_NUHS), KC_NO   ,                                  _______  , KC_1     , KC_2     , KC_3    , _______  , _______  ,
-  _______ , KC_NO    , KC_NO    , KC_RBRC  , S(KC_RBRC), KC_NO   , _______  ,            KC_INT3  , _______  , KC_0     , KC_DOT   , KC_COMM , _______  , _______  ,
+  _______ , KC_NO    , KC_NO    , KC_RBRC  , S(KC_RBRC), KC_NO   ,                                  _______  , KC_1     , KC_2     , KC_3    , _______  , _______  ,
+  _______ , KC_NO    , KC_NO    , KC_NUHS  , S(KC_NUHS), KC_NO   , _______  ,            KC_INT3  , _______  , KC_0     , KC_DOT   , KC_COMM , _______  , _______  ,
   _______ , _______  , _______  , _______  , _______   , _______ , _______  ,            _______  , _______  , _______  , _______  , _______ , _______  , _______
 ),
 
 [2] = LAYOUT_universal(
   _______,_______                    , _______  , _______  , _______  , _______ ,                       _______  , _______  , _______  , _______  , _______ , _______ ,
-  _______,S(LCTL(LALT(LGUI(KC_F12)))), KC_NO    , KC_NO    , KC_NO    , KC_NO   ,                       KC_BTN5  , KC_HOME  , KC_UP    , KC_END   ,KC_PAGE_UP, _______ ,
+  TO(0)  ,S(LCTL(LALT(LGUI(KC_F12)))), KC_NO    , KC_NO    , KC_NO    , KC_NO   ,                       KC_BTN5  , KC_HOME  , KC_UP    , KC_END   ,KC_PAGE_UP, _______ ,
   _______,LCTL(KC_A)                 , KC_NO    , KC_NO    , TO(0)    , KC_NO   ,                      KC_BTN4  , KC_LEFT  , KC_DOWN  , KC_RGHT,KC_PAGE_DOWN, _______  ,
   _______,LCTL(KC_Z)                 ,LCTL(KC_X),LCTL(KC_C),LCTL(KC_V), TO(0)   , TO(0)  ,    TO(0)   , SCRL_TO  , KC_BTN1  , KC_BTN2  , SCRL_MO  , KC_BTN3  , _______  ,
   _______,_______                    , _______  , _______  , _______  , _______, _______ ,     KC_DEL  , _______  , _______  , _______  , _______  , _______  , _______
