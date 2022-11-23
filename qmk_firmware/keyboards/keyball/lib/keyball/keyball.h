@@ -88,6 +88,10 @@ enum keyball_keycodes {
     SCRL_DVI, // Increment scroll divider
     SCRL_DVD, // Decrement scroll divider
 
+    THR_U,
+    THR_D,
+    COUNT_U,
+    COUNT_D,
     KEYBALL_SAFE_RANGE,
 };
 
@@ -149,7 +153,11 @@ extern keyball_t keyball;
 
 /// keyball_oled_render_ballinfo renders ball information to OLED.
 /// It uses just 21 columns to show the info.
-void keyball_oled_render_ballinfo(void);
+void keyball_oled_render_ballinfo(
+        uint8_t pointingDeviceLayer_moveCount,
+        uint8_t threshold,
+        uint8_t countThreshold
+        );
 
 /// keyball_oled_render_keyinfo renders last processed key information to OLED.
 /// It shows column, row, key code, and key name (if available).

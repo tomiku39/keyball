@@ -14,6 +14,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include "stdio.h"
 
 #include "quantum.h"
 #ifdef SPLIT_KEYBOARD
@@ -349,7 +350,11 @@ const char PROGMEM code_to_name[] = {
 // clang-format on
 #endif
 
-void keyball_oled_render_ballinfo(void) {
+void keyball_oled_render_ballinfo(
+        uint8_t pointingDeviceLayer_moveCount,
+        uint8_t threshold,
+        uint8_t countThreshold
+        ) {
 #ifdef OLED_ENABLE
     // Format: `Ball:{mouse x}{mouse y}{mouse h}{mouse v}`
     //         `    CPI{CPI} S{SCROLL_MODE} D{SCROLL_DIV}`
@@ -370,6 +375,17 @@ void keyball_oled_render_ballinfo(void) {
     oled_write_char(keyball.scroll_mode ? '1' : '0', false);
     oled_write_P(PSTR("  D"), false);
     oled_write_char('0' + keyball_get_scroll_div(), false);
+
+    oled_write_P(PSTR(" Co"), false);
+    oled_write(format_4d(pointingDeviceLayer_moveCount), false);
+
+    oled_write_P(PSTR(" M"), false);
+    oled_write(format_4d(threshold), false);
+
+    oled_write_P(PSTR(" C"), false);
+    oled_write(format_4d(countThreshold), false);
+
+
 #endif
 }
 

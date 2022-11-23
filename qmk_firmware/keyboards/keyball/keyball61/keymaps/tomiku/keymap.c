@@ -17,7 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include QMK_KEYBOARD_H
-
 #include "quantum.h"
 
 // clang-format off
@@ -28,7 +27,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [0] = LAYOUT_universal(
   KC_ESC   , KC_1     , KC_2     , KC_3     , KC_4     , KC_5     ,                                  KC_6     , KC_7     , KC_8     , KC_9     , KC_0     , KC_MINS  ,
   KC_TAB   , KC_Q     , KC_W     , KC_E     , KC_R     , KC_T     ,                                  KC_Y     , KC_U     , KC_I     , KC_O     , KC_P     , KC_LBRC  ,
-  KC_TAB   , KC_A     , KC_S     , KC_D     , KC_F     , KC_G     ,                                  KC_H     , KC_J     , KC_K     , KC_L     , KC_SCLN  , KC_QUOT  ,
+  KC_LCTL  , KC_A     , KC_S     , KC_D     , KC_F     , KC_G     ,                                  KC_H     , KC_J     , KC_K     , KC_L     , KC_SCLN  , KC_QUOT  ,
   KC_LSFT  , KC_Z     , KC_X     , KC_C     , KC_V     , KC_B     ,   KC_RBRC  ,            KC_NUHS, KC_N     , KC_M     , KC_COMM  , KC_DOT   , KC_SLSH  , KC_RO    ,
   KC_LCTL  , KC_LCTL  , KC_LALT  , KC_LGUI,LT(1,KC_GRV),LT(2,KC_MHEN),LT(3, KC_SPC),        KC_BSPC, KC_ENT   , _______  , _______  , _______  , KC_RALT  , KC_RCTL
 ),
@@ -42,19 +41,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ),
 
 [2] = LAYOUT_universal(
-  _______,KC_F1                      , KC_F2    , KC_F3    , KC_F4    , KC_F5  ,                       KC_F6    , KC_F7    , KC_F8    , KC_F9    , KC_F10   , KC_F11   ,
-  _______,S(LCTL(LALT(LGUI(KC_F12)))), KC_NO    , KC_NO    , KC_NO    , KC_NO  ,                       KC_BTN5  , KC_HOME  , KC_UP    , KC_END   ,KC_PAGE_UP, KC_F12   ,
-  _______,LCTL(KC_A)                 , KC_NO    , KC_NO    , TO(0)     , KC_NO  ,                      KC_BTN4  , KC_LEFT  , KC_DOWN  , KC_RGHT,KC_PAGE_DOWN, _______  ,
+  _______,_______                    , _______  , _______  , _______  , _______ ,                       _______  , _______  , _______  , _______  , _______ , _______ ,
+  _______,S(LCTL(LALT(LGUI(KC_F12)))), KC_NO    , KC_NO    , KC_NO    , KC_NO   ,                       KC_BTN5  , KC_HOME  , KC_UP    , KC_END   ,KC_PAGE_UP, _______ ,
+  _______,LCTL(KC_A)                 , KC_NO    , KC_NO    , TO(0)    , KC_NO   ,                      KC_BTN4  , KC_LEFT  , KC_DOWN  , KC_RGHT,KC_PAGE_DOWN, _______  ,
   _______,LCTL(KC_Z)                 ,LCTL(KC_X),LCTL(KC_C),LCTL(KC_V), TO(0)   , TO(0)  ,    TO(0)   , SCRL_TO  , KC_BTN1  , KC_BTN2  , SCRL_MO  , KC_BTN3  , _______  ,
   _______,_______                    , _______  , _______  , _______  , _______, _______ ,     KC_DEL  , _______  , _______  , _______  , _______  , _______  , _______
 ),
 
 
 [3] = LAYOUT_universal(
-  _______ , _______ , _______ , _______ , _______  , KBC_RST  ,                                  _______  , _______  , _______  , _______  , _______  , _______  ,
-  _______ , _______ , _______ , _______ , KC_PSCR  , KC_PAUS  ,                                  _______  , _______  , _______  , _______  , _______  , _______  ,
-  _______ , _______ , _______ , _______ , KC_INS   , TO(1)    ,                                  CPI_D1K  , CPI_D100 , CPI_I100 , CPI_I1K  , KBC_SAVE , KBC_RST  ,
-  _______ , _______ , _______ , _______ , _______  , TO(0)    ,   TO(2)  ,            _______  , KC_HOME  , KC_PGDN  , KC_PGUP  , KC_END   , _______  , _______  ,
+  _______ , KC_F1   , KC_F2   , KC_F3   , KC_F4    , KC_F5    ,                                  KC_F6    , KC_F7    , KC_F8    , KC_F9    , KC_F10   , KC_F11   ,
+  _______ , COUNT_U , THR_U   , _______ , KC_PSCR  , KC_PAUS  ,                                  CPI_D1K  , CPI_D100 , CPI_I100 , CPI_I1K  , _______  , KC_F12   ,
+  _______ , COUNT_D , THR_D   , _______ , KC_INS   , TO(1)    ,                                  _______  , _______  , KC_MSTP  , _______  , KC_VOLU  , KBC_RST  ,
+  _______ , _______ , _______ , _______ , _______  , TO(0)    ,   TO(2)  ,            KC_MUTE  , KC_MSTP  , KC_MPRV  , KC_MPLY  , KC_MNXT  , KC_VOLD  , KBC_SAVE ,
   _______ , _______ , _______ , _______ , _______  , _______  , _______  ,            _______  , KC_BSPC  , _______  , _______  , _______  , _______  , EEP_RST
 ),
 };
@@ -92,18 +91,67 @@ int16_t abs(int16_t num) {
     return num;
 }
 
+
+
+uint8_t pointingDeviceLayer_moveCount = 0;
+uint8_t countThreshold = 10;
+uint8_t threshold = 10;
+
+
 // トラックボールが動いた時のフック
 report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
     int16_t current_x = abs(mouse_report.x);
     int16_t current_y = abs(mouse_report.y);
 
     // thresholdの数値を変えてどれぐらいの速度でトラックボールを動かしたらレイヤを変更するか調整
-    int16_t threshold = 15;
     if ((current_x > threshold || current_y > threshold)) {
         // 移動先レイヤの数字を入れる
-        layer_move(2);
-    }
+        if(pointingDeviceLayer_moveCount > countThreshold){
+          layer_move(2);
+          pointingDeviceLayer_moveCount = 0;
+        } else {
+              pointingDeviceLayer_moveCount++;
+        }
+  }
     return mouse_report;
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+
+    if (record->event.pressed) {
+      pointingDeviceLayer_moveCount = 0;
+      switch(keycode){
+        case THR_U:
+            threshold++;
+            if(threshold > 100){
+                threshold = 100;
+            }
+            break;
+        case THR_D:
+            threshold--;
+            if(threshold < 1){
+                threshold = 1;
+            }
+            break;
+        case COUNT_U:
+            countThreshold++;
+            if(countThreshold > 100){
+                countThreshold = 100;
+            }
+            break;
+        case COUNT_D:
+            countThreshold--;
+            if(countThreshold < 1){
+                countThreshold = 1;
+            }
+            break;
+    default:
+        return true;
+      }
+    }
+
+
+    return true;
 }
 
 
@@ -131,6 +179,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
 void oledkit_render_info_user(void) {
     keyball_oled_render_keyinfo();
-    keyball_oled_render_ballinfo();
+    keyball_oled_render_ballinfo(pointingDeviceLayer_moveCount, threshold, countThreshold);
+
 }
 #endif
