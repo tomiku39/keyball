@@ -20,12 +20,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////////////
 // Configurations
 
+// CPIのデフォルト値を変更。初期値は500
 #ifndef KEYBALL_CPI_DEFAULT
-#    define KEYBALL_CPI_DEFAULT 500
+#    define KEYBALL_CPI_DEFAULT 700
 #endif
 
+// スクロール速度を一番遅い値に設定。初期値は4
 #ifndef KEYBALL_SCROLL_DIV_DEFAULT
-#    define KEYBALL_SCROLL_DIV_DEFAULT 4 // 4: 1/8 (1/2^(n-1))
+#    define KEYBALL_SCROLL_DIV_DEFAULT 7 // 4: 1/8 (1/2^(n-1))
 #endif
 
 #ifndef KEYBALL_REPORTMOUSE_INTERVAL

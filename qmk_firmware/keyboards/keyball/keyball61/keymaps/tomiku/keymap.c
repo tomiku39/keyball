@@ -21,46 +21,109 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "quantum.h"
 
 // clang-format off
+// キー配置はdefaultで持ってくるとかRemapで変更する等してください。
+// レイヤでLEDの色が変わるようにするとどうやらTO()等でレイヤを移動する時にレイヤ番号が変わるらしく、RemapでTO(1)等と設定してもLEDの色は変わりません。
+// ここのキーマップで設定したレイヤ番号とRemapで表示されている内容を照らし合わせてCustomのCode(Hex)に設定するとVIA上で設定したレイヤ移動でも色が変化しました。（正しい使い方なのかはわかりません。）
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-  [0] = LAYOUT_universal(
-    KC_ESC   , KC_1     , KC_2     , KC_3     , KC_4     , KC_5     ,                                  KC_6     , KC_7     , KC_8     , KC_9     , KC_0     , KC_MINS  ,
-    KC_DEL   , KC_Q     , KC_W     , KC_E     , KC_R     , KC_T     ,                                  KC_Y     , KC_U     , KC_I     , KC_O     , KC_P     , KC_INT3  ,
-    KC_TAB   , KC_A     , KC_S     , KC_D     , KC_F     , KC_G     ,                                  KC_H     , KC_J     , KC_K     , KC_L     , KC_SCLN  , S(KC_7)  ,
-    MO(1)    , KC_Z     , KC_X     , KC_C     , KC_V     , KC_B     , KC_RBRC  ,              KC_NUHS, KC_N     , KC_M     , KC_COMM  , KC_DOT   , KC_SLSH  , KC_RSFT  ,
-    _______  , KC_LCTL  , KC_LALT  , KC_LGUI,LT(1,KC_LANG2),LT(2,KC_SPC),LT(3,KC_LANG1),    KC_BSPC,LT(2,KC_ENT),LT(1,KC_LANG2),KC_RGUI, _______ , KC_RALT  , KC_PSCR
-  ),
+[0] = LAYOUT_universal(
+  KC_ESC   , KC_1     , KC_2     , KC_3     , KC_4     , KC_5     ,                                  KC_6     , KC_7     , KC_8     , KC_9     , KC_0     , KC_MINS  ,
+  KC_TAB   , KC_Q     , KC_W     , KC_E     , KC_R     , KC_T     ,                                  KC_Y     , KC_U     , KC_I     , KC_O     , KC_P     , KC_LBRC  ,
+  KC_TAB   , KC_A     , KC_S     , KC_D     , KC_F     , KC_G     ,                                  KC_H     , KC_J     , KC_K     , KC_L     , KC_SCLN  , KC_QUOT  ,
+  KC_LSFT  , KC_Z     , KC_X     , KC_C     , KC_V     , KC_B     ,   KC_RBRC  ,            KC_NUHS, KC_N     , KC_M     , KC_COMM  , KC_DOT   , KC_SLSH  , KC_RO    ,
+  KC_LCTL  , KC_LCTL  , KC_LALT  , KC_LGUI,LT(1,KC_GRV),LT(2,KC_MHEN),LT(3, KC_SPC),        KC_BSPC, KC_ENT   , _______  , _______  , _______  , KC_RALT  , KC_RCTL
+),
 
-  [1] = LAYOUT_universal(
-    S(KC_ESC), S(KC_1)  , KC_LBRC  , S(KC_3)  , S(KC_4)  , S(KC_5)  ,                                  KC_EQL   , S(KC_6)  ,S(KC_QUOT), S(KC_8)  , S(KC_9)  ,S(KC_INT1),
-    S(KC_DEL), S(KC_Q)  , S(KC_W)  , S(KC_E)  , S(KC_R)  , S(KC_T)  ,                                  S(KC_Y)  , S(KC_U)  , S(KC_I)  , S(KC_O)  , S(KC_P)  ,S(KC_INT3),
-    S(KC_TAB), S(KC_A)  , S(KC_S)  , S(KC_D)  , S(KC_F)  , S(KC_G)  ,                                  S(KC_H)  , S(KC_J)  , S(KC_K)  , S(KC_L)  , KC_QUOT  , S(KC_2)  ,
-    _______  , S(KC_Z)  , S(KC_X)  , S(KC_C)  , S(KC_V)  , S(KC_B)  ,S(KC_RBRC),           S(KC_NUHS), S(KC_N)  , S(KC_M)  ,S(KC_COMM), S(KC_DOT),S(KC_SLSH),S(KC_RSFT),
-    _______  ,S(KC_LCTL),S(KC_LALT),S(KC_LGUI), _______  , _______  , _______  ,            _______  , _______  , _______  ,S(KC_RGUI), _______  , S(KC_RALT), _______
-  ),
+[1] = LAYOUT_universal(
+  S(KC_ESC),KC_NO    , KC_NO    , KC_NO    , KC_NO     , KC_NO   ,                              KC_NUM_LOCK  , KC_7     , KC_8     , KC_9    , _______  , KC_EQL  ,
+  _______ , KC_NO    , KC_NO    , KC_NO    , KC_NO     , KC_NO   ,                                  _______  , KC_4     , KC_5     , KC_6    , _______  , _______  ,
+  _______ , KC_NO    , KC_NO    , KC_NUHS  , S(KC_NUHS), KC_NO   ,                                  _______  , KC_1     , KC_2     , KC_3    , _______  , _______  ,
+  _______ , KC_NO    , KC_NO    , KC_RBRC  , S(KC_RBRC), KC_NO   , _______  ,            KC_INT3  , _______  , KC_0     , KC_DOT   , KC_COMM , _______  , _______  ,
+  _______ , _______  , _______  , _______  , _______   , _______ , _______  ,            _______  , _______  , _______  , _______  , _______ , _______  , _______
+),
 
-  [2] = LAYOUT_universal(
-    _______  , KC_F1    , KC_F2    , KC_F3    , KC_F4    , KC_F5    ,                                  KC_F6    , KC_F7    , KC_F8    , KC_F9    , KC_F10   , KC_F11   ,
-    _______  , _______  , KC_7     , KC_8     , KC_9     , _______  ,                                  _______  , KC_LEFT  , KC_UP    , KC_RGHT  , _______  , KC_F12   ,
-    _______  , _______  , KC_4     , KC_5     , KC_6     ,S(KC_SCLN),                                  KC_PGUP  , KC_BTN1  , KC_DOWN  , KC_BTN2  , KC_BTN3  , _______  ,
-    _______  , _______  , KC_1     , KC_2     , KC_3     ,S(KC_MINS), S(KC_8)  ,            S(KC_9)  , KC_PGDN  , _______  , _______  , _______  , _______  , _______  ,
-    _______  , _______  , KC_0     , KC_DOT   , _______  , _______  , _______  ,             KC_DEL  , _______  , _______  , _______  , _______  , _______  , _______
-  ),
+[2] = LAYOUT_universal(
+  _______,KC_F1                      , KC_F2    , KC_F3    , KC_F4    , KC_F5  ,                       KC_F6    , KC_F7    , KC_F8    , KC_F9    , KC_F10   , KC_F11   ,
+  _______,S(LCTL(LALT(LGUI(KC_F12)))), KC_NO    , KC_NO    , KC_NO    , KC_NO  ,                       KC_BTN5  , KC_HOME  , KC_UP    , KC_END   ,KC_PAGE_UP, KC_F12   ,
+  _______,LCTL(KC_A)                 , KC_NO    , KC_NO    , TO(0)     , KC_NO  ,                      KC_BTN4  , KC_LEFT  , KC_DOWN  , KC_RGHT,KC_PAGE_DOWN, _______  ,
+  _______,LCTL(KC_Z)                 ,LCTL(KC_X),LCTL(KC_C),LCTL(KC_V), TO(0)   , TO(0)  ,    TO(0)   , SCRL_TO  , KC_BTN1  , KC_BTN2  , SCRL_MO  , KC_BTN3  , _______  ,
+  _______,_______                    , _______  , _______  , _______  , _______, _______ ,     KC_DEL  , _______  , _______  , _______  , _______  , _______  , _______
+),
 
-  [3] = LAYOUT_universal(
-    RGB_TOG  , _______  , _______  , _______  , _______  , _______  ,                                  RGB_M_P  , RGB_M_B  , RGB_M_R  , RGB_M_SW , RGB_M_SN , RGB_M_K  ,
-    RGB_MOD  , RGB_HUI  , RGB_SAI  , RGB_VAI  , _______  , _______  ,                                  RGB_M_X  , RGB_M_G  , RGB_M_T  , RGB_M_TW , _______  , _______  ,
-    RGB_RMOD , RGB_HUD  , RGB_SAD  , RGB_VAD  , _______  , _______  ,                                  CPI_D1K  , CPI_D100 , CPI_I100 , CPI_I1K  , KBC_SAVE , KBC_RST  ,
-    _______  , _______  , SCRL_DVD , SCRL_DVI , SCRL_MO  , SCRL_TO  , EEP_RST  ,            EEP_RST  , KC_HOME  , KC_PGDN  , KC_PGUP  , KC_END   , _______  , _______  ,
-    RESET    , _______  , KC_LEFT  , KC_DOWN  , KC_UP    , KC_RGHT  , _______  ,            _______  , KC_BSPC  , _______  , _______  , _______  , _______  , RESET
-  ),
+
+[3] = LAYOUT_universal(
+  _______ , _______ , _______ , _______ , _______  , KBC_RST  ,                                  _______  , _______  , _______  , _______  , _______  , _______  ,
+  _______ , _______ , _______ , _______ , KC_PSCR  , KC_PAUS  ,                                  _______  , _______  , _______  , _______  , _______  , _______  ,
+  _______ , _______ , _______ , _______ , KC_INS   , TO(1)    ,                                  CPI_D1K  , CPI_D100 , CPI_I100 , CPI_I1K  , KBC_SAVE , KBC_RST  ,
+  _______ , _______ , _______ , _______ , _______  , TO(0)    ,   TO(2)  ,            _______  , KC_HOME  , KC_PGDN  , KC_PGUP  , KC_END   , _______  , _______  ,
+  _______ , _______ , _______ , _______ , _______  , _______  , _______  ,            _______  , KC_BSPC  , _______  , _______  , _______  , _______  , EEP_RST
+),
 };
-// clang-format on
 
+#if defined(RGBLIGHT_ENABLE) && defined(RGBLIGHT_LAYERS)
+// LEDの色が左手のみ変わっていますが、数値を74とかに変えても右手が変わってくれなかったため左手のみのままでやりました。
+// 普通にできると思うので必要に応じて設定してみてください。
+// レイヤ0の色指定
+const rgblight_segment_t PROGMEM ZERO_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+{0, 34, HSV_CYAN}
+);
+// レイヤ1の色指定
+const rgblight_segment_t PROGMEM ONE_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+{0, 34, HSV_GREEN}
+);
+// レイヤ2の色指定
+const rgblight_segment_t PROGMEM TWO_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+{0, 34, HSV_YELLOW}
+);
+// レイヤ3の色指定
+const rgblight_segment_t PROGMEM THREE_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+{0, 34, HSV_RED}
+);
+
+const rgblight_segment_t* const PROGMEM user_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
+ZERO_layer,
+ONE_layer,
+TWO_layer,
+THREE_layer
+);
+int16_t abs(int16_t num) {
+    if (num < 0) {
+        num = -num;
+    }
+    return num;
+}
+
+// トラックボールが動いた時のフック
+report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
+    int16_t current_x = abs(mouse_report.x);
+    int16_t current_y = abs(mouse_report.y);
+
+    // thresholdの数値を変えてどれぐらいの速度でトラックボールを動かしたらレイヤを変更するか調整
+    int16_t threshold = 15;
+    if ((current_x > threshold || current_y > threshold)) {
+        // 移動先レイヤの数字を入れる
+        layer_move(2);
+    }
+    return mouse_report;
+}
+
+
+void keyboard_post_init_user(void) {
+    rgblight_layers = user_rgb_layers;
+}
+
+// clang-format on
+// レイヤガ切り替わったときのフック
 layer_state_t layer_state_set_user(layer_state_t state) {
+    rgblight_set_layer_state(0, layer_state_cmp(state, 0));
+    rgblight_set_layer_state(1, layer_state_cmp(state, 1));
+    rgblight_set_layer_state(2, layer_state_cmp(state, 2));
+    rgblight_set_layer_state(3, layer_state_cmp(state, 3));
+
     // Auto enable scroll mode when the highest layer is 3
     keyball_set_scroll_mode(get_highest_layer(state) == 3);
     return state;
 }
+#endif
 
 #ifdef OLED_ENABLE
 
